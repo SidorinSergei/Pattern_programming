@@ -34,16 +34,7 @@ def first_positive(a)
   end
   return "no positive elements"
 end
-def do_3_2
-  args = ARGV
-  def do_stuff(func, data_source_path)
-    puts func.class
-    data = File.open(data_source_path)
-    arr = data.readline.split(' ').map(&:to_i)
-    self.send(func, arr)
-  end
-  puts do_stuff( "#{args[0]}".to_sym, args[1])
-end
+
 def main
 #   ввод массива
   puts "Введите размер массива: "
@@ -56,6 +47,14 @@ def main
   puts "Минимальный элемент массива: #{min(a)}"
   puts "Максимальный элемент массива: #{max(a)}"
   puts "Номер первого положительного элемента: #{first_positive(a)}"
+  args = ARGV
+  def do_stuff(func, data_source_path)
+    puts func.class
+    data = File.open(data_source_path)
+    arr = data.readline.split(' ').map(&:to_i)
+    self.send(func, arr)
+  end
+  puts do_stuff( "#{args[0]}".to_sym, args[1])
 end
 
 main
