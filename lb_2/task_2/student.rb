@@ -37,9 +37,19 @@ class Student
     validate
   end
 
-  def get_info
-    puts "\nФамилия - #{last_name}\nИмя - #{first_name}\nОтчество - #{patronymic}\nID - #{id}\nНомер - #{phone}\nTelegram - #{telegram}\nПочта - #{email}\nGit - #{git}"
+  def getInfo
+    "#{get_name_info}.; Git: #{git}; #{get_cont_info}"
   end
+
+  def get_cont_info
+    return "Phone: #{phone}" if phone
+    return "Telegram: #{telegram}" if telegram
+    return "Email: #{email}" if email
+  end
+  def get_name_info
+    "#{last_name} #{first_name[0]}.#{patronymic[0]}"
+  end
+
 
   def set_contacts(phone,telegram,email,git)
     raise ArgumentError,'Неверный формат номера телефона' if phone&&!Student.correct_phone?(phone)
@@ -67,22 +77,33 @@ class Student
   end
 
   def self.parse(input_string)
-    data = input_string.split(',')
+    data = input_string.strip.split(/\s*,\s*/)
     raise ArgumentError.new('Invalid string format') if data.size != 8
 
-    id = data[0].strip.to_i
-    last_name = data[1].strip
-    first_name = data[2].strip
-    patronymic = data[3].strip
-    phone = data[4].strip
-    telegram = data[5].strip
-    email = data[6].strip
-    git = data[7].strip
+    begin
+      student_hash = {
+        id: data[0],
+        last_name: data[1],
+        first_name: data[2],
+        patronymic: data[3],
+        phone: data[4],
+        telegram: data[5],
+        email: data[6],
+        git: data[7]
+      }
+      student = self.new(student_hash)
+      if !student.valid?
+        raise ArgumentError, "Invalid data in string '#{input_string}'"
+      end
+    rescue => e
+      raise ArgumentError, "Error parsing string '#{input_string}': #{e.message}"
+    end
 
-    raise ArgumentError.new('Invalid id format') if id <= 0
-    raise ArgumentError.new('Invalid phone format') if !Student.correct_phone?(phone)
+    return student
+  end
 
-    Student.new({id: id, last_name: last_name, first_name: first_name, patronymic: patronymic, phone: phone, telegram: telegram, email: email, git: git})
+  def valid?
+    true
   end
   def to_string
     "ID: #{@id}, Name: #{@last_name} #{@first_name} #{@patronymic}, Phone: #{@phone}, Telegram: #{@telegram}, Email: #{@email}, Git: #{@git}"
