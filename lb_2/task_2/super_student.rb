@@ -24,11 +24,11 @@ class SuperStudent
     value.match?(TELEGRAM)
   end
   def valid_git
-    raise ArgumentError,'Git обязательно должен быть указан!' unless git
+    raise ArgumentError,'Git обязательно должен быть указан!' unless @git
   end
 
   def valid_contact
-    raise ArgumentError,'Должен быть указан как минимум один контакт' unless phone||telegram||email
+    raise ArgumentError,'Должен быть указан как минимум один контакт' unless @phone||@telegram||@email
   end
 
   def valid_id
@@ -36,15 +36,17 @@ class SuperStudent
   end
   def valid_fio
     raise ArgumentError,'ФИО - обязательные параметры' unless
-      last_name&&first_name&&patronymic
+      @last_name&&@first_name&&@patronymic
   end
+
+  protected
   def validate
     valid_contact
     valid_git
     valid_fio
     valid_id
   end
-  def set_contacts(phone,telegram,email,git)
+  def set_contacts(git: ,phone: , telegram: , email: )
     raise ArgumentError,'Неверный формат номера телефона' if phone&&!SuperStudent.correct_phone?(phone)
     raise ArgumentError,'Неверный формат имени пользователя в telegram' if telegram&&!SuperStudent.correct_telegram?(telegram)
     raise ArgumentError,'Неверный формат электронной почты' if email&&!SuperStudent.correct_email?(email)
@@ -56,26 +58,21 @@ class SuperStudent
 
   end
 
-  def self.parse(input_string)
-    data = input_string.strip.split(/\s*,\s*/)
-    raise ArgumentError.new('Invalid string format') if data.size > 8
+  def SuperStudent.parse(id,str)
+    class_field=[:id,:last_name,:first_name,:patronymic,:git,:phone,:telegram,:email]
 
     begin
-      student_hash = {
-        id: data[0],
-        last_name: data[1],
-        first_name: data[2],
-        patronymic: data[3],
-        phone: data[4],
-        telegram: data[5],
-        email: data[6],
-        git: data[7]
-      }
-    rescue => e
-      raise ArgumentError, "Error parsing string '#{input_string}': #{e.message}"
-    end
+      data = str.split(', ')
+      data.unshift(id)
+      if data.size<class_field.size
+        raise ArgumentError.new('Invalid string format')
+      end
 
-    return student_hash
+      data.map! {|val| val=='-' ? nil : val}
+      arg=class_field.zip(data).to_h
+    rescue NoMethodError
+      raise ArgumentError, "Error parsing string "
+    end
   end
 
   def to_string

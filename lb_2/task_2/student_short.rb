@@ -1,4 +1,5 @@
 require_relative 'super_student.rb'
+require_relative 'student.rb'
 class Student_short<SuperStudent
   attr_reader :id, :name, :git, :contact
   protected :last_name, :first_name, :patronymic, :phone, :telegram, :email, :git,:last_name=, :first_name=, :patronymic=, :phone=, :telegram=, :email=, :git=
@@ -9,9 +10,9 @@ class Student_short<SuperStudent
     @contact = "#{student[:phone]? student[:phone] : '-'}, #{student[:telegram]? student[:telegram] : '-'}, #{student[:email]? student[:email] : '-'}"
   end
 
-  def self.parse_string(input_string)
-    hash = parse(input_string)
-    Student_short.new(hash)
+  def Student_short.parse(id,input_string)
+    hash = super(id,input_string)
+    new(Student.new(hash))
   end
   def getInfo
     "#{@id}, #{@name}, #{@git}, #{@contact}"

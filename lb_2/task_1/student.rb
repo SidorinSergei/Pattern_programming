@@ -20,7 +20,7 @@ class Student
   end
 
   def Student.correct_telegram?(value)
-    value.match?(value)
+    value.match?(TELEGRAM)
   end
 
   def initialize(arg ={last_name:'',first_name:'',patronymic:''})
@@ -64,6 +64,28 @@ class Student
   def validate
     valid_contact
     valid_git
+  end
+
+  def self.parse(input_string)
+    data = input_string.split(',')
+    raise ArgumentError.new('Invalid string format') if data.size != 8
+
+    id = data[0].strip.to_i
+    last_name = data[1].strip
+    first_name = data[2].strip
+    patronymic = data[3].strip
+    phone = data[4].strip
+    telegram = data[5].strip
+    email = data[6].strip
+    git = data[7].strip
+
+    raise ArgumentError.new('Invalid id format') if id <= 0
+    raise ArgumentError.new('Invalid phone format') if !Student.correct_phone?(phone)
+
+    Student.new({id: id, last_name: last_name, first_name: first_name, patronymic: patronymic, phone: phone, telegram: telegram, email: email, git: git})
+  end
+  def to_string
+    "ID: #{@id}, Name: #{@last_name} #{@first_name} #{@patronymic}, Phone: #{@phone}, Telegram: #{@telegram}, Email: #{@email}, Git: #{@git}"
   end
 
 end
