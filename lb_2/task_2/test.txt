@@ -1,4 +1,0 @@
-Иванов, Иван, Иванович, https://github.com/ivanov, +7 123 456 78 90, @ivanov, ivanov@gmail.com
-Петров, Петр, Петрович, https://github.com/petrov, +7 123 456 78 90, @petrov, -
-Сидоров, Сидр, Сидорович, https://github.com/sidorov, -, @sidorov, -
-Сергеев, Сергей, Сергеевич, https://github.com/sergeev, +7 123 456 78 90, -, -

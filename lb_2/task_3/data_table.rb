@@ -1,5 +1,3 @@
-#Создать класс Data_table.
-
 class Data_table
   def initialize(source_array)
     @arr = source_array
