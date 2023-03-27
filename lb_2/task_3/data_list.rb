@@ -1,4 +1,4 @@
-class Data_list
+class DataList
   def initialize(source_array)
     source_array.sort!
     @arr = source_array

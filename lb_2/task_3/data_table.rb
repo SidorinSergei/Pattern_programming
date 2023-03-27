@@ -1,4 +1,4 @@
-class Data_table
+class DataTable
   def initialize(source_array)
     @arr = source_array
   end
