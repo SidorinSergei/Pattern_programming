@@ -20,11 +20,8 @@ class DataList
     res
   end
 
-  def get_names
-
-  end
-
-  def get_data
-
+  def clear_sel
+    @select = []
+    nil
   end
 end

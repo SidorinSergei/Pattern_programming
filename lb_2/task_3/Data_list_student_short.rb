@@ -2,22 +2,32 @@ require_relative 'C:/Users/79892/Documents/GitHub/Pattern_programming/lb_2/task_
 require_relative 'data_list.rb'
 
 class DataListStudentShort < DataList
-  def get_names
-    objects_attributes = []
-    count_attr = 1
-    @arr.each do |obj|
-      temp = obj.instance_variables
-      temp.map! { |sym| sym.to_s.gsub(/@/,'') }
-      temp.select! { |el| el != 'id' }
-      temp.unshift(count_attr)
-      objects_attributes.push(temp)
-      count_attr += 1
-    end
-    objects_attributes
+  def initialize(source_array)
+    super
+    @names = set_names
   end
 
-  def get_data
-    DataTable.new(@arr)
+  def arr=(source_array)
+    raise(ArgumentError, 'Массив может содержать только элементы StudentShort!') unless valid_array?(source_array)
+    super
+    self.data = DataTable.new(@arr)
+    nil
+  end
+
+  protected
+
+  def valid_array?(array)
+    array.all? { |obj| obj.is_a?(Student_short)}
+  end
+
+  def set_names
+    acc = []
+    count_attr = 1
+    %w[ФИО Git Контакт].each do |attr|
+      acc.push [count_attr, attr]
+      count_attr += 1
+    end
+    acc
   end
 end
 
