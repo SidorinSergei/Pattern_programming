@@ -1,4 +1,12 @@
 class DataList
+
+  protected
+
+  attr_writer :data
+
+  public
+
+  attr_reader :names, :data
   def initialize(source_array)
     source_array.sort!
     @arr = source_array
