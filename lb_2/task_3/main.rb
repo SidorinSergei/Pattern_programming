@@ -15,23 +15,23 @@ student_arr = [test4, test5, test6]
 data_list = DataListStudentShort.new(student_arr)
 
 puts 'get_selected'
-data_list.sel(3)
+data_list.select(3)
 print "#{data_list.get_selected}\n"
 
-data_list.sel([1, 2, 3])
+data_list.select([1, 2, 3])
 print "#{data_list.get_selected}\n"
 
-data_list.sel([3, 1, 2])
+data_list.select([3, 1, 2])
 print "#{data_list.get_selected}\n"
 
 puts 'get_names'
-data_list.get_names.each { |arr| print(arr, "\n") }
+data_list.names.each { |attr| puts "#{attr[0]} #{attr[1]}" }
 
-data_table = data_list.get_data
+data_table = data_list.data
 print "class: #{data_table.class}\nrows: #{data_table.n_rows}\ncolumns: #{data_table.n_columns}\n"
 
-rows = data_table.n_rows
-columns = data_table.n_columns
+rows = data_table.num_rows
+columns = data_table.num_columns
 
 (0...rows).each do |arr|
   puts
