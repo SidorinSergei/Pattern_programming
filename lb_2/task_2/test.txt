@@ -1,0 +1,2 @@
+Иванов,Иван,Иванович,https://github.com/Ivanov,+79001234567,@ivanov,ivanov@gmail.com
+Петров,Петр,Петрович,https://github.com/Petrov,+79002345678,@petrov,petrov@gmail.com

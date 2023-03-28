@@ -23,7 +23,7 @@ class Student<SuperStudent
   def getInfo
     cont_arr = [@phone,@telegram,@email]
     contact = cont_arr.find_index {|cont| !cont.nil?}
-    "#{@id}, #{get_name_info}, #{@git? @git : '-'}, #{contact ? cont_arr[contact] : '-'}"
+    "#{get_name_info}, #{@git? @git : '-'}, #{contact ? cont_arr[contact] : '-'}"
   end
 
   def get_name_info
