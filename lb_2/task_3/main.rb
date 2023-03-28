@@ -10,7 +10,7 @@ test4 = Student_short.parse_object(test1)
 test5 = Student_short.parse_object(test2)
 test6 = Student_short.parse_object(test3)
 
-student_arr = [test1, test2, test3, test4, test5, test6]
+student_arr = [test4, test5, test6]
 
 data_list = DataListStudentShort.new(student_arr)
 
