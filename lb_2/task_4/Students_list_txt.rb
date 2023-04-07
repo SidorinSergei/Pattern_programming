@@ -59,7 +59,7 @@ class StudentsListTxt
   def id_match(data_list_obj, matrix_only_data)
     matrix_only_data.map! { |arr| arr.shift }
     quan_objects = matrix_only_data.length
-    (1..quan_objects).each { |number| data_list_obj.sel(number) }
+    (1..quan_objects).each { |number| data_list_obj.select(number) }
     id_arr = data_list_obj.get_selected
     [id_arr, matrix_only_data]
   end
@@ -71,8 +71,8 @@ class StudentsListTxt
 
   def extract_data_table(data_list_obj)
     data_table_obj = data_list_obj.data
-    rows = data_table_obj.n_rows
-    columns = data_table_obj.n_columns
+    rows = data_table_obj.num_rows
+    columns = data_table_obj.num_columns
     matrix = []
 
     (0...rows).each do |i|
@@ -105,5 +105,38 @@ class StudentsListTxt
 
     student_short_arr = student_short_arr[(k - 1) * n...k * n]
     DataListStudentShort.new(student_short_arr)
+  end
+
+  def remove_student(id)
+    @arr.reject! { |obj| obj.id == id }
+  end
+
+  def get_student_count
+    @arr.length
+  end
+
+  def get_count_id
+    @id_range.sample
+  end
+
+  def sort_by_fio
+    @arr.sort_by! { |obj| [obj.last_name, obj.first_name, obj.patronymic]}
+  end
+
+  def valid_student?(object)
+    object.is_a?(Student) ? true : false
+  end
+
+  def add_student(object)
+    raise(ArgumentError,'Переданное значение должно быть типа Student!') unless valid_student?(object)
+    object.id = get_count_id
+    @arr.push(object)
+  end
+
+  def replace_student(id, object)
+    raise(ArgumentError,'Переданное значение должно быть типа Student!') unless valid_student?(object)
+    index = @arr.find_index { |obj|  obj.id == id}
+    object.id = @arr[index].id
+    @arr.fill(object, index, 1)
   end
 end
