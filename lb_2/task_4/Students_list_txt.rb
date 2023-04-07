@@ -57,7 +57,10 @@ class StudentsListTxt
   end
 
   def id_match(data_list_obj, matrix_only_data)
-    matrix_only_data.map! { |arr| arr.shift }
+    matrix_only_data.map! do |arr|
+      arr.shift
+      arr
+    end
     quan_objects = matrix_only_data.length
     (1..quan_objects).each { |number| data_list_obj.select(number) }
     id_arr = data_list_obj.get_selected
@@ -90,19 +93,18 @@ class StudentsListTxt
   end
 
   def get_k_n_student_short_list(k, n, exist_data_list = nil)
-    message = "В текущем списке нет столько элементов, чтобы получить #{k} список из #{n} элементов!"
-    raise(ArgumentError, message) unless valid_k_n?(k, n)
-
-    student_short_arr = @arr.map { |obj| Student_short.parse_object(obj) }
+    message_1 = "В текущем списке нет столько элементов, чтобы получить #{k} список из #{n} элементов!"
+    message_2 = "В качестве необязатального аргумента может использоваться только объект типа DataListStudentShort!"
 
     if exist_data_list
-      message = "В качестве необязатального аргумента может использоваться только объект типа DataListStudentShort!"
-      raise(ArgumentError, message) unless valid_data_list?(exist_data_list)
+      raise(ArgumentError, message_2) unless valid_data_list?(exist_data_list)
       additional_arr = convert_to_student_short(exist_data_list)
-      student_short_arr += additional_arr
-      student_short_arr.uniq! { |student_short| student_short.id }
+      @arr += additional_arr
+      @arr.uniq! { |obj| obj.id }
     end
 
+    raise(ArgumentError, message_1) unless valid_k_n?(k, n)
+    student_short_arr = @arr.map { |obj| obj.is_a?(Student) ? Student_short.parse_object(obj) : obj }
     student_short_arr = student_short_arr[(k - 1) * n...k * n]
     DataListStudentShort.new(student_short_arr)
   end
@@ -115,6 +117,7 @@ class StudentsListTxt
     @arr.length
   end
 
+  protected
   def get_count_id
     @id_range.sample
   end
